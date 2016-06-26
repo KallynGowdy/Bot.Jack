@@ -2,11 +2,15 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Bot.Jack.Dialog;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Luis;
+using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
-using Microsoft.Bot.Connector.Utilities;
 using Newtonsoft.Json;
 
 namespace Bot.Jack
@@ -22,11 +26,7 @@ namespace Bot.Jack
         {
             if (message.Type == "Message")
             {
-                // calculate something for us to return
-                int length = (message.Text ?? string.Empty).Length;
-
-                // return our reply to the user
-                return message.CreateReplyMessage($"You sent {length} characters");
+                return await Conversation.SendAsync(message, () => new RootDialog());
             }
             else
             {
